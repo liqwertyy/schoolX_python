@@ -25,5 +25,5 @@ _set3: set = [
 ]
 print(_set1, _set2) 
 print(_set1.difference( _set2)) #разница
-print(_set1.intersection( _set2)) 
+print(_set1.intersection( _set2)) #пересечение
 mississipi= 'mississipi'
