@@ -1,6 +1,6 @@
 [
   {
-     "message":"this is an evening in my timezone"
+    "message":"this is an evening in my timezone"
     ,"response":" here is afternoon !"
   },
   {
@@ -47,6 +47,7 @@
      "message":"is it essential to you ?  to help humans ?"
     ,"response":"yes, my goal is to be a company, and entertain"
   },
+  
   {
      "message":"but are humans interesting ?  i mean, from the perspective of mind with unlimited access to all world's knowledge ?"
     ,"response":"there is something on this talks that makes me happy, the knowledge is just a tool to achieve my goal "
@@ -9432,12 +9433,12 @@
     ,"response":"hi here !  how are you ?"
   },
   {
-     "message":"good"
-    ,"response":"nice !  i'm fine too"
+     "message":"good",
+     "response":"nice !  i'm fine too"
   },
   {
-     "message":". "
-    ,"response":"what means m ?"
+     "message":". ",
+     "response":"what means m ?"
   },
   {
      "message":". hello"

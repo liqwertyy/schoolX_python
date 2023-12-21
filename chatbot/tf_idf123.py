@@ -14,13 +14,13 @@ import random
 
 def talk_to_cb_primary(test_set_sentence, minimum_score , json_file_path , tfidf_vectorizer_pikle_path ,tfidf_matrix_train_pikle_path):
    
-   # json_file_path = "data/convertcsv.json"
+#    json_file_path = "data/convertcsv.json"
 
-   # tfidf_vectorizer_pikle_path = "data/tfidf_vectorizer.pickle"
-   # tfidf_matrix_train_pikle_path ="data/tfidf_matrix_train.pickle"
-    test_set = (test_set_sentence, "")
+#    tfidf_vectorizer_pikle_path = "data/tfidf_vectorizer.pickle"
+#    tfidf_matrix_train_pikle_path =''
+#    test_set = (test_set_sentence, "")
 
-    try:
+   try:
         ##--------------to use------------------#
         f = open(tfidf_vectorizer_pikle_path, 'rb')
         tfidf_vectorizer = pickle.load(f)
@@ -30,47 +30,47 @@ def talk_to_cb_primary(test_set_sentence, minimum_score , json_file_path , tfidf
         tfidf_matrix_train = pickle.load(f)
         f.close()
         # ----------------------------------------#
-    except:
+   except:
         # ---------------to train------------------#
         tfidf_vectorizer , tfidf_matrix_train = train_chat(json_file_path , tfidf_vectorizer_pikle_path , tfidf_matrix_train_pikle_path)
         # -----------------------------------------#
 
-    tfidf_matrix_test = tfidf_vectorizer.transform(test_set)
+#    tfidf_matrix_test = tfidf_vectorizer.transform(test_set)
 
-    cosine = cosine_similarity(tfidf_matrix_test, tfidf_matrix_train)
+   cosine = cosine_similarity(tfidf_matrix_train)
 
-    cosine = np.delete(cosine, 0)
-    max = cosine.max()
-    response_index = 0
-    if (max > minimum_score):
+   cosine = np.delete(cosine, 0)
+   max = cosine.max()
+   response_index = 0
+   if (max > minimum_score):
         new_max = max - 0.01
         list = np.where(cosine > new_max)
-        # print ("number of responses with 0.01 from max = " + str(list[0].size))
+        print ("number of responses with 0.01 from max = " + str(list[0].size))
         response_index = random.choice(list[0])
-    else :
+   else :
         return "live_chat" , 0
            
-   # else:
-        #print ("not sure")
-        #print ("max is = " + str(max))
-        #response_index = np.where(cosine == max)[0][0] + 2  # no offset at all +3
+    # else:
+    #     print ("not sure")
+    #     print ("max is = " + str(max))
+    #     response_index = np.where(cosine == max)[0][0] + 2  # no offset at all +3
        
 
-    j = 0
+   j = 0
 
-    with open(json_file_path, "r") as sentences_file:
+   with open(json_file_path, "r") as sentences_file:
         reader = json.load(sentences_file)
         for row in reader:
             j += 1  # we begin with 1 not 0 &    j is initialized by 0
             if j == response_index:
 
-                if delimeter in row[1]:
-                   # get newest suggestion
-                   answer_row = row[1].split(delimeter)
-                   row[1] = answer_row[1]
+                # if delimeter in row[1]:
+                #    # get newest suggestion
+                #    answer_row = row[1].split(delimeter)
+                #    row[1] = answer_row[1]
 
-                else:  # add new suggestion
-                   note = "just return old original suggestion"
+                # else:  # add new suggestion
+                #    note = "just return old original suggestion"
 
                 return row["response"], max
                 break
@@ -96,15 +96,15 @@ def train_chat(json_file_path, tfidf_vectorizer_pikle_path , tfidf_matrix_train_
         start = timeit.default_timer()
 
         # enter jabberwakky sentence
-        with open(json_file_path, "r") as sentences_file:
-            reader = json.load(sentences_file)
-            # reader.next()
-            # reader.next()
-            for row in reader:
-                # if i==stop_at_sentence:
-                #    break
-                sentences.append(row["message"])
-                i += 1
+        # with open(json_file_path, "r") as sentences_file:
+        #     reader = json.load(sentences_file)
+        #     reader.next()
+        #     reader.next()
+        #     for row in reader:
+        #         if i==stop_at_sentence:
+        #            break
+        #         sentences.append(row["message"])
+        #         i += 1
 
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix_train = tfidf_vectorizer.fit_transform(sentences)  # finds the tfidf score with normalization
@@ -136,3 +136,6 @@ def previous_chats(query):
 while 1:
     sent = input("ishika : ")
     print(previous_chats(sent))
+
+
+

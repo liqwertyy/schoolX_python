@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 
 # _____helper Libraries_____
-import pickle
+import pickle   
 import csv
 import json
 import timeit
@@ -22,13 +22,13 @@ def talk_to_cb_primary(test_set_sentence, minimum_score , json_file_path , tfidf
 
     try:
         ##--------------to use------------------#
-        f = open(tfidf_vectorizer_pikle_path, 'rb')
-        tfidf_vectorizer = pickle.load(f)
-        f.close()
+       
+        with open("./tfidf_vectorizer.pickle", 'rb') as f: 
+            tfidf_vectorizer = pickle.load(f)
 
-        f = open(tfidf_matrix_train_pikle_path, 'rb')
-        tfidf_matrix_train = pickle.load(f)
-        f.close()
+         
+        with open("./tfidf_matrix_train.pickle", 'rb') as f:
+            tfidf_matrix_train = pickle.load(f)
         # ----------------------------------------#
     except:
         # ---------------to train------------------#
@@ -64,25 +64,25 @@ def talk_to_cb_primary(test_set_sentence, minimum_score , json_file_path , tfidf
             j += 1  # we begin with 1 not 0 &    j is initialized by 0
             if j == response_index:
 
-                if delimeter in row[1]:
-                   # get newest suggestion
-                   answer_row = row[1].split(delimeter)
-                   row[1] = answer_row[1]
+                #if delimeter in row[1]:
+                #    # get newest suggestion
+                #    answer_row = row[1].split(delimeter)
+                #    row[1] = answer_row[1]
 
-                else:  # add new suggestion
-                   note = "just return old original suggestion"
+                #else:  # add new suggestion
+                #    note = "just return old original suggestion"
 
                 return row["response"], max
                 break
 
 
-def previous_chats(query):
-   minimum_score = 0.7
-   file = "data/previous_chats.json"
-   tfidf_vectorizer_pikle_path = "data/previous_tfidf_vectorizer.pickle"
-   tfidf_matrix_train_path = "data/previous_tfidf_matrix_train.pickle"
-   query_response, score = talk_to_cb_primary(query , minimum_score , file , tfidf_vectorizer_pikle_path , tfidf_matrix_train_path)
-   return query_response , score
+#def previous_chats(query):
+#    minimum_score = 0.7
+#    file = "data/previous_chats.json"
+#    tfidf_vectorizer_pikle_path = "data/previous_tfidf_vectorizer.pickle"
+#    tfidf_matrix_train_path = "data/previous_tfidf_matrix_train.pickle"
+#    query_response, score = talk_to_cb_primary(query , minimum_score , file , tfidf_vectorizer_pikle_path , tfidf_matrix_train_path)
+#    return query_response , score
 
 def train_chat(json_file_path, tfidf_vectorizer_pikle_path , tfidf_matrix_train_pikle_path):
         
@@ -127,12 +127,23 @@ def train_chat(json_file_path, tfidf_vectorizer_pikle_path , tfidf_matrix_train_
 
 def previous_chats(query):
     minimum_score = 0.7
-    file = "data/previous_chats.json"
-    tfidf_vectorizer_pikle_path = "data/previous_tfidf_vectorizer.pickle"
-    tfidf_matrix_train_path = "data/previous_tfidf_matrix_train.pickle"
+   
+
+    with open(file, 'rb') as f:
+        file=json.load(f)
+
+    with open("./tfidf_vectorizer.pickle", 'rb') as f:
+     tfidf_vectorizer_pikle_path= pickle.load(f)
+    # код для работы с загруженным tfidf_vectorizer
+
+    with open("./tfidf_matrix_train.pickle", 'rb') as f:
+         tfidf_matrix_train_path= pickle.load(f)
+    # код для работы с загруженной tfidf_matrix_train
     query_response, score = talk_to_cb_primary(query , minimum_score , file , tfidf_vectorizer_pikle_path , tfidf_matrix_train_path)
     return query_response
 
 while 1:
     sent = input("ishika : ")
     print(previous_chats(sent))
+
+
